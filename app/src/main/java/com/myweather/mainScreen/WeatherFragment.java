@@ -11,8 +11,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.myweather.R;
+import com.squareup.picasso.Picasso;
 
 public class WeatherFragment extends Fragment {
 
@@ -35,4 +37,10 @@ public class WeatherFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ImageView imageView = view.findViewById(R.id.imageView);
+        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(imageView);
+    }
 }
