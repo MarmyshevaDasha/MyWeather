@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -16,13 +18,10 @@ import com.google.gson.GsonBuilder;
 import com.myweather.R;
 import com.myweather.model.Root;
 
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
@@ -52,16 +51,35 @@ public class WeatherFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final TextView textDegree = view.findViewById(R.id.textDegree);
+        final ImageView imageCloud = view.findViewById(R.id.imageCloud);
+        final TextView textCityName = view.findViewById(R.id.textCityName);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                textDegree.setText(getDegree());
+                final Root root = getRoot();
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (root != null) {
+                            root.clouds.all = 80;
+                            textDegree.setText(String.valueOf(Math.round(root.main.temp)));
+                            textCityName.setText(root.name);
+                            if (root.clouds.all <= 20) {
+                                imageCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.white_balance_sunny));
+                            } else if (root.clouds.all <= 50) {
+                                imageCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.weather_partly_cloudy));
+                            } else {
+                                imageCloud.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.cloud_outline));
+                            }
+                        }
+                    }
+                });
             }
         });
         thread.start();
     }
 
-    private String getDegree() {
+    private Root getRoot() {
         HttpURLConnection httpURLConnection = null;
         Root root = null;
         try {
@@ -79,7 +97,8 @@ public class WeatherFragment extends Fragment {
             GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();
             root = gson.fromJson(sb.toString(), Root.class);
-            return String.valueOf(root.main.temp);
+            return root;
+
         } catch (UnknownHostException e) {
             System.out.println("UnknownHostException: " + e);
         } catch (IOException e) {
