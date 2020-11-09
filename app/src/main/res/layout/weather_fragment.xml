@@ -9,8 +9,11 @@
     <include
         android:id="@+id/include"
         layout="@layout/sky_layout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         app:layout_constraintBottom_toTopOf="@+id/textCityName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -18,11 +21,9 @@
         android:id="@+id/textDegree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
         android:lineSpacingExtra="8dp"
         android:padding="16dp"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageCloud"
@@ -47,5 +48,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
+
+    <TextView
+        android:id="@+id/tvLocationGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvLocationNet"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDegree"
+        tools:text="GPS"/>
+
+    <TextView
+        android:id="@+id/tvLocationNet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvLocationGPS"
+        app:layout_constraintTop_toBottomOf="@+id/textDegree"
+        tools:text="NET" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
